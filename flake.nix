@@ -15,10 +15,10 @@
         src = self;
 
         buildPhase = ''
-          clang -c sub.c -o sub_c.o
-          clang -c main.c -o main_c.o
-          gcc -c sub.c -o sub_g.o
-          gcc -c main.c -o main_g.o
+          clang -c stack/sub.c -o sub_c.o
+          clang -c stack/main.c -o main_c.o
+          gcc -c stack/sub.c -o sub_g.o
+          gcc -c stack/main.c -o main_g.o
           mkdir build
           clang main_c.o sub_c.o -o build/ccc
           clang main_c.o sub_g.o -o build/ccg

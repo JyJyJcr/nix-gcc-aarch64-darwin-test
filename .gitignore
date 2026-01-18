@@ -1,2 +1,3 @@
-sub.o
+*.o
 main
+result
