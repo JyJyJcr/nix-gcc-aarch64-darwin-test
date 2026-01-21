@@ -18,13 +18,22 @@
         #pkgs.lib.filter (x: x != "target") old.configurePlatforms;
       });
       gcc-patched = pkgs.wrapCC (gcc-unwrapped-patched);
+      gfortran-patched = pkgs.wrapCC (gcc-unwrapped-patched.override {
+        name = "gfortran";
+        langFortran = true;
+        langCC = false;
+        langC = false;
+        profiledCompiler = false;
+      });
 
       stackTest-patched = stackTest.override { gcc = gcc-patched; };
+      fftwTest-patched = fftwTest.override { gfortran = gfortran-patched; };
     in {
       packages.${system} = {
         stackTest = stackTest;
         stackTest-patched = stackTest-patched;
         fftwTest = fftwTest;
+        fftwTest-patched = fftwTest-patched;
         gcc-unwrapped-patched = gcc-unwrapped-patched;
         gcc-patched = gcc-patched;
       };
@@ -39,6 +48,10 @@
           installPhase = "mkdir -p $out";
         });
         fftwTest = fftwTest.overrideAttrs (old: {
+          doCheck = true;
+          installPhase = "mkdir -p $out";
+        });
+        fftwTest-patched = fftwTest-patched.overrideAttrs (old: {
           doCheck = true;
           installPhase = "mkdir -p $out";
         });
