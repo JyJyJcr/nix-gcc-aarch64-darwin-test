@@ -12,9 +12,9 @@
       fftwTest = pkgs.callPackage ./fftw/pacakage.nix { };
       gcc-unwrapped-patched = pkgs.gcc.cc.overrideAttrs (old: {
         configureFlags = old.configureFlags
-          ++ [ "--build=aarch64-apple-darwin" ];
+          ++ [ "--build=aarch64-apple-darwin20" ];
         configurePlatforms = [ ];
-        patches = old.patches ++ [ ./any-aarch64-darwin.patch ];
+        #patches = old.patches ++ [ ./any-aarch64-darwin.patch ];
         #pkgs.lib.filter (x: x != "target") old.configurePlatforms;
       });
       gcc-patched = pkgs.wrapCC (gcc-unwrapped-patched);
