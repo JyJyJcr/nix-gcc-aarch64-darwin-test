@@ -1,4 +1,4 @@
-{ stdenv, gcc }:
+{ stdenv, gcc, flags ? "" }:
 
 let
   name = "stack-test";
@@ -18,17 +18,17 @@ in stdenv.mkDerivation {
   buildPhase = ''
     clang -c sub.c -o sub_c.o
     clang -c main.c -o main_c.o
-    gcc -c sub.c -o sub_g.o
-    gcc -c main.c -o main_g.o
+    gcc -c sub.c -o sub_g.o ${flags}
+    gcc -c main.c -o main_g.o ${flags}
     mkdir build
     clang main_c.o sub_c.o -o build/ccc
     clang main_c.o sub_g.o -o build/ccg
     clang main_g.o sub_c.o -o build/cgc
     clang main_g.o sub_g.o -o build/cgg
-    gcc main_c.o sub_c.o -o build/gcc
-    gcc main_c.o sub_g.o -o build/gcg
-    gcc main_g.o sub_c.o -o build/ggc
-    gcc main_g.o sub_g.o -o build/ggg
+    gcc main_c.o sub_c.o -o build/gcc ${flags}
+    gcc main_c.o sub_g.o -o build/gcg ${flags}
+    gcc main_g.o sub_c.o -o build/ggc ${flags}
+    gcc main_g.o sub_g.o -o build/ggg ${flags}
 
     mkdir -p ./result
     echo "# kind exit-code" > ./summary.out

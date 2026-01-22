@@ -1,0 +1,62 @@
+diff --git a/configure b/configure
+index 4a5cc27..c012580 100755
+--- a/configure
++++ b/configure
+@@ -909,7 +909,10 @@ RANLIB_FOR_TARGET
+ READELF_FOR_TARGET
+ STRIP_FOR_TARGET
+ WINDRES_FOR_TARGET
+-WINDMC_FOR_TARGET'
++WINDMC_FOR_TARGET
++nix_darwin_build_version
++nix_darwin_host_version
++nix_darwin_target_version'
+ 
+ 
+ # Initialize some variables set by options.
+@@ -2408,8 +2411,8 @@ test "x$ac_build_alias" = x &&
+   ac_build_alias=`$SHELL "$ac_aux_dir/config.guess"`
+ test "x$ac_build_alias" = x &&
+   as_fn_error $? "cannot guess build type; you must specify one" "$LINENO" 5
+-ac_cv_build=`$SHELL "$ac_aux_dir/config.sub" $ac_build_alias` ||
+-  as_fn_error $? "$SHELL $ac_aux_dir/config.sub $ac_build_alias failed" "$LINENO" 5
++ac_cv_build=`$SHELL "$ac_aux_dir/config.sub" $ac_build_alias$nix_darwin_build_version` ||
++  as_fn_error $? "$SHELL $ac_aux_dir/config.sub $ac_build_alias$nix_darwin_build_version failed" "$LINENO" 5
+ 
+ fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_build" >&5
+@@ -2467,8 +2470,8 @@ else
+   if test "x$host_alias" = x; then
+   ac_cv_host=$ac_cv_build
+ else
+-  ac_cv_host=`$SHELL "$ac_aux_dir/config.sub" $host_alias` ||
+-    as_fn_error $? "$SHELL $ac_aux_dir/config.sub $host_alias failed" "$LINENO" 5
++  ac_cv_host=`$SHELL "$ac_aux_dir/config.sub" $host_alias$nix_darwin_host_version` ||
++    as_fn_error $? "$SHELL $ac_aux_dir/config.sub $host_alias$nix_darwin_host_version failed" "$LINENO" 5
+ fi
+ 
+ fi
+@@ -2500,8 +2503,8 @@ else
+   if test "x$target_alias" = x; then
+   ac_cv_target=$ac_cv_host
+ else
+-  ac_cv_target=`$SHELL "$ac_aux_dir/config.sub" $target_alias` ||
+-    as_fn_error $? "$SHELL $ac_aux_dir/config.sub $target_alias failed" "$LINENO" 5
++  ac_cv_target=`$SHELL "$ac_aux_dir/config.sub" $target_alias$nix_darwin_target_version` ||
++    as_fn_error $? "$SHELL $ac_aux_dir/config.sub $target_alias$nix_darwin_target_version failed" "$LINENO" 5
+ fi
+ 
+ fi
+diff --git a/gcc/config.gcc b/gcc/config.gcc
+index 6337fb0..e652c8b 100644
+--- a/gcc/config.gcc
++++ b/gcc/config.gcc
+@@ -1180,7 +1180,7 @@ esac
+ # Figure out if we need to enable heap trampolines
+ # and variadic functions handling.
+ case ${target} in
+-aarch64*-*-darwin2*)
++aarch64*-*-darwin*)
+   # This applies to arm64 Darwin variadic funtions.
+   tm_defines="$tm_defines STACK_USE_CUMULATIVE_ARGS_INIT=1"
+   # Executable stack is forbidden.
